@@ -35,3 +35,43 @@ The system consists of three main modules:
 1. Clone this repository to your local machine:
    ```bash
    git clone [https://github.com/Anahita-Roohi/Hamming-Code-VHDL.git](https://github.com/Anahita-Roohi/Hamming-Code-VHDL.git)
+
+## 📊 Simulation Results & Waveforms
+
+The system was rigorously tested using an ISim testbench to cover various edge cases, including single-bit and double-bit errors across different parity modes. Below is the analysis of the simulation results:
+
+### Test 1: Single Parity Bit Error
+* **Conditions:** `Data = 11010110`, `Odd_Mode = 1`, `Error injected at P2`
+* **Analysis:** The decoder successfully identifies that the error occurred within the second parity bit rather than the data payload. The `Valid` flag remains `1`, and the output data correctly matches the original error-free input.
+> <img width="667" height="106" alt="image" src="https://github.com/user-attachments/assets/bf1ff759-bf10-4965-a910-dab7288ab67e" />
+[عکس اسکرین‌شات تست ۱ را اینجا رها کنید]
+
+### Test 2: Single Data Bit Error
+* **Conditions:** `Data = 00100101`, `Odd_Mode = 0`, `Error injected at Data(3)`
+* **Analysis:** A single bit of the main data payload is corrupted. The decoder successfully locates and corrects the flipped bit. The `Valid` flag is asserted to `1`, and the recovered output is completely accurate.
+> <img width="668" height="106" alt="image" src="https://github.com/user-attachments/assets/d81692f2-06a3-4324-964e-28cf867497e4" />
+[عکس اسکرین‌شات تست ۲ را اینجا رها کنید]
+
+### Test 3: Double Data Bit Error
+* **Conditions:** `Data = 00111001`, `Odd_Mode = 1`, `Error injected at Data(1) & Data(5)`
+* **Analysis:** Two bits within the data payload are simultaneously corrupted. As expected from the Hamming Code limitations, the system detects the double error but cannot correct it. The `Valid` flag correctly drops to `0`, indicating invalid output.
+> <img width="668" height="102" alt="image" src="https://github.com/user-attachments/assets/3f56fcf8-2966-417d-b6e4-156810d37cbf" />
+[عکس اسکرین‌شات تست ۳ را اینجا رها کنید]
+
+### Test 4: Mixed Double Error (Data & Parity)
+* **Conditions:** `Data = 11100001`, `Odd_Mode = 0`, `Error injected at P8 & Data(3)`
+* **Analysis:** One parity bit and one data bit are corrupted. The overall parity check successfully catches the double-bit error condition. The `Valid` flag is pulled to `0` to warn the system of data invalidity.
+> <img width="668" height="103" alt="image" src="https://github.com/user-attachments/assets/c9a23dd7-7a08-405c-bdfe-bb433b4c7b35" />
+[عکس اسکرین‌شات تست ۴ را اینجا رها کنید]
+
+### Test 5: Overall Parity Bit Error
+* **Conditions:** `Data = 00111111`, `Odd_Mode = 1`, `Error injected at P13`
+* **Analysis:** The error is isolated to the 13th bit (overall parity bit). The system recognizes that the main data and primary syndromes are intact. The `Valid` flag remains `1`, and the output data is passed through without issue.
+> <img width="668" height="104" alt="image" src="https://github.com/user-attachments/assets/5afa348b-bf0e-4721-9aa4-f53433759fd9" />
+[عکس اسکرین‌شات تست ۵ را اینجا رها کنید]
+
+### Test 6: Double Parity Bit Error
+* **Conditions:** `Data = 10101010`, `Odd_Mode = 0`, `Error injected at P1 & P2`
+* **Analysis:** Two parity bits are corrupted simultaneously. The system correctly identifies the presence of multiple errors. Consequently, the `Valid` flag becomes `0`.
+> <img width="678" height="105" alt="image" src="https://github.com/user-attachments/assets/6cc81c02-2177-4e8c-97b5-df6bf3763728" />
+[عکس اسکرین‌شات تست ۶ را اینجا رها کنید]
